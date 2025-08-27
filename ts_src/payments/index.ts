@@ -23,6 +23,7 @@ import { p2sh } from './p2sh.js';
 import { p2wpkh } from './p2wpkh.js';
 import { p2wsh } from './p2wsh.js';
 import { p2tr } from './p2tr.js';
+import { p2tsh } from './p2tsh.js';
 
 export interface Payment {
   name?: string;
@@ -58,7 +59,7 @@ export type StackElement = Uint8Array | number;
 export type Stack = StackElement[];
 export type StackFunction = () => Stack;
 
-export { embed, p2ms, p2pk, p2pkh, p2sh, p2wpkh, p2wsh, p2tr };
+export { embed, p2ms, p2pk, p2pkh, p2sh, p2wpkh, p2wsh, p2tr, p2tsh };
 
 // TODO
 // witness commitment

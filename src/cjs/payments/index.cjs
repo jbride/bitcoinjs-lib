@@ -1,6 +1,7 @@
 'use strict';
 Object.defineProperty(exports, '__esModule', { value: true });
-exports.p2tr =
+exports.p2tsh =
+  exports.p2tr =
   exports.p2wsh =
   exports.p2wpkh =
   exports.p2sh =
@@ -63,6 +64,13 @@ Object.defineProperty(exports, 'p2tr', {
   enumerable: true,
   get: function () {
     return p2tr_js_1.p2tr;
+  },
+});
+const p2tsh_js_1 = require('./p2tsh.cjs');
+Object.defineProperty(exports, 'p2tsh', {
+  enumerable: true,
+  get: function () {
+    return p2tsh_js_1.p2tsh;
   },
 });
 // TODO
