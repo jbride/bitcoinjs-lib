@@ -1,6 +1,9 @@
 {
-  "name": "bitcoinjs-lib",
-  "version": "7.0.0-rc.0",
+  "name": "@jbride/bitcoinjs-lib",
+  "version": "7.0.0-rc.0-p2tsh-0.1",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Client-side Bitcoin JavaScript library",
   "type": "module",
   "main": "./src/cjs/index.cjs",
@@ -69,7 +72,8 @@
     "bs58check": "^4.0.0",
     "uint8array-tools": "^0.0.9",
     "valibot": "^0.38.0",
-    "varuint-bitcoin": "^2.0.0"
+    "varuint-bitcoin": "^2.0.0",
+    "@jbride/bitcoinpqc": "^0.2.9"
   },
   "devDependencies": {
     "bitcoinjs-lib": ".",

@@ -16,7 +16,11 @@
       "alwaysStrict": true,
       "noUnusedLocals": true,
       "noUnusedParameters": true,
-      "moduleResolution": "Node"
+      "moduleResolution": "Node",
+      "baseUrl": ".",
+      "paths": {
+        "bitcoinpqc": ["node_modules/@jbride/bitcoinpqc"]
+      }
     },
     "include": ["ts_src/**/*.ts"],
     "exclude": ["node_modules/**/*"]

@@ -7,6 +7,8 @@
 import { ripemd160 } from '@noble/hashes/ripemd160';
 import { sha256 } from '@noble/hashes/sha256';
 import * as tools from 'uint8array-tools';
+import { randomBytes } from 'crypto';
+import { Algorithm, generateKeyPair, sign, verify } from 'bitcoinpqc';
 
 /**
  * Computes the HASH160 (RIPEMD-160 after SHA-256) of the given buffer.
@@ -130,4 +132,90 @@ export function taggedHash(
   data: Uint8Array,
 ): Uint8Array {
   return sha256(tools.concat([TAGGED_HASH_PREFIXES[prefix], data]));
+}
+
+/**
+ * Utility functions for working with bitcoinpqc library
+ */
+
+export interface CryptoConfig {
+    algorithm: Algorithm;
+    randomDataSize?: number;
+}
+
+export class BitcoinPQCClient {
+    private readonly algorithm: Algorithm;
+    private readonly randomDataSize: number;
+
+    constructor(config: CryptoConfig) {
+        this.algorithm = config.algorithm;
+        this.randomDataSize = config.randomDataSize || 128;
+    }
+
+    /**
+     * Generate a new key pair
+     */
+    generateKeyPair() {
+        const randomData = randomBytes(this.randomDataSize);
+        return generateKeyPair(this.algorithm, randomData);
+    }
+
+    /**
+     * Sign a message with the given secret key
+     */
+    signMessage(secretKey: any, message: string | Buffer): any {
+        const messageBytes = typeof message === 'string'
+            ? Buffer.from(message, 'utf-8')
+            : message;
+
+        return sign(secretKey, messageBytes);
+    }
+
+    /**
+     * Verify a signature with the given public key and message
+     */
+    verifySignature(publicKey: any, message: string | Buffer, signature: any): boolean {
+        const messageBytes = typeof message === 'string'
+            ? Buffer.from(message, 'utf-8')
+            : message;
+
+        try {
+            verify(publicKey, messageBytes, signature);
+            return true;
+        } catch {
+            return false;
+        }
+    }
+
+    /**
+     * Get the current algorithm being used
+     */
+    getAlgorithm(): Algorithm {
+        return this.algorithm;
+    }
+
+    /**
+     * Get algorithm name as string
+     */
+    getAlgorithmName(): string {
+        return Algorithm[this.algorithm];
+    }
+}
+
+/**
+ * Create a new BitcoinPQC client for SLH-DSA
+ */
+export function createSlhDsaClient(): BitcoinPQCClient {
+    return new BitcoinPQCClient({
+        algorithm: Algorithm.SLH_DSA_SHAKE_128S,
+    });
+}
+
+/**
+ * Create a new BitcoinPQC client for ML-DSA
+ */
+export function createMlDsaClient(): BitcoinPQCClient {
+    return new BitcoinPQCClient({
+        algorithm: Algorithm.ML_DSA_44,
+    });
 }
