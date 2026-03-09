@@ -12,28 +12,25 @@ import {
   rootHashFromPath,
   findScriptPath,
   tapleafHash,
-  LEAF_VERSION_TAPSCRIPT_HASH,
+  LEAF_VERSION_PAY_TO_MERKLE_ROOT,
 } from './bip360.js';
-import { Payment, PaymentOpts } from './index.js';
 import * as lazy from './lazy.js';
 import { bech32m } from 'bech32';
 import { fromBech32 } from '../address.js';
 import * as tools from 'uint8array-tools';
 import * as v from 'valibot';
-
 const OPS = bscript.OPS;
 const TAPROOT_SCRIPT_HASH_WITNESS_VERSION = 0x02;
 const ANNEX_PREFIX = 0x50;
-
 /**
- * Creates a Pay-to-Taproot-Script-Hash (P2TSH) payment object.
+ * Creates a Pay-to-Taproot-Script-Hash (P2MR) payment object.
  *
- * @param a - The payment object containing the necessary data for P2TSH.
+ * @param a - The payment object containing the necessary data for P2MR.
  * @param opts - Optional payment options.
- * @returns The P2TSH payment object.
+ * @returns The P2MR payment object.
  * @throws {TypeError} If the provided data is invalid or insufficient.
  */
-export function p2tsh(a: Payment, opts?: PaymentOpts): Payment {
+export function p2mr(a, opts) {
   if (
     !a.address &&
     !a.output &&
@@ -42,9 +39,7 @@ export function p2tsh(a: Payment, opts?: PaymentOpts): Payment {
     !a.hash
   )
     throw new TypeError('Not enough data for script-path spend');
-
   opts = Object.assign({ validate: true }, opts || {});
-
   v.parse(
     v.partial(
       v.object({
@@ -71,11 +66,9 @@ export function p2tsh(a: Payment, opts?: PaymentOpts): Payment {
     ),
     a,
   );
-
   const _address = lazy.value(() => {
-    return fromBech32(a.address!);
+    return fromBech32(a.address);
   });
-
   // remove annex if present, ignored by taproot
   const _witness = lazy.value(() => {
     if (!a.witness || !a.witness.length) return;
@@ -87,24 +80,19 @@ export function p2tsh(a: Payment, opts?: PaymentOpts): Payment {
     }
     return a.witness.slice();
   });
-
   const _hashTree = lazy.value(() => {
     if (a.scriptTree) return toHashTree(a.scriptTree);
     if (a.hash) return { hash: a.hash };
     return;
   });
-
   const network = a.network || BITCOIN_NETWORK;
-  const o: Payment = { name: 'p2tsh', network };
-
+  const o = { name: 'P2MR', network };
   lazy.prop(o, 'address', () => {
     if (!o.pubkey) return;
-
     const words = bech32m.toWords(o.pubkey);
     words.unshift(TAPROOT_SCRIPT_HASH_WITNESS_VERSION);
     return bech32m.encode(network.bech32, words);
   });
-
   lazy.prop(o, 'hash', () => {
     const hashTree = _hashTree();
     if (hashTree) return hashTree.hash;
@@ -118,7 +106,6 @@ export function p2tsh(a: Payment, opts?: PaymentOpts): Payment {
     }
     return null;
   });
-
   lazy.prop(o, 'pubkey', () => {
     if (a.pubkey) return a.pubkey;
     if (a.output) return a.output.slice(2);
@@ -128,7 +115,6 @@ export function p2tsh(a: Payment, opts?: PaymentOpts): Payment {
     // If hash is provided directly, use it as the pubkey
     if (a.hash) return a.hash;
   });
-
   lazy.prop(o, 'output', () => {
     if (!o.pubkey) return;
     return bscript.compile([OPS.OP_2, o.pubkey]);
@@ -142,13 +128,11 @@ export function p2tsh(a: Payment, opts?: PaymentOpts): Payment {
     ) {
       return a.redeem.redeemVersion;
     }
-
-    return LEAF_VERSION_TAPSCRIPT_HASH;
+    return LEAF_VERSION_PAY_TO_MERKLE_ROOT;
   });
   lazy.prop(o, 'redeem', () => {
     const witness = _witness(); // witness without annex
     if (!witness || witness.length < 2) return;
-
     return {
       output: witness[witness.length - 2],
       witness: witness.slice(0, -2),
@@ -161,10 +145,8 @@ export function p2tsh(a: Payment, opts?: PaymentOpts): Payment {
     if (!witness || witness.length !== 1) return;
     return witness[0];
   });
-
   lazy.prop(o, 'witness', () => {
     if (a.witness) return a.witness;
-    
     // Handle script tree case (only when we have a real script tree)
     if (a.scriptTree) {
       const hashTree = _hashTree();
@@ -176,42 +158,33 @@ export function p2tsh(a: Payment, opts?: PaymentOpts): Payment {
         const path = findScriptPath(hashTree, leafHash);
         if (!path) return;
         const controlBlock = tools.concat(
-          [
-            Uint8Array.from([o.redeemVersion!]),
-          ].concat(path),
+          [Uint8Array.from([o.redeemVersion])].concat(path),
         );
         return [a.redeem.output, controlBlock];
       }
     }
-    
     // Handle direct hash case (no script tree)
     if (o.hash && o.redeem && o.redeem.output) {
       // For direct hash case, witness should be [version + redeem.output, signature]
       const witness = [];
-      
       // Add signature if available
       if (o.redeem.witness) {
         witness.push(...o.redeem.witness);
       }
-      
       // Add the redeem script with version prefix
       const versionedRedeemScript = tools.concat([
-        Uint8Array.from([o.redeemVersion!]),
-        o.redeem.output
+        Uint8Array.from([o.redeemVersion]),
+        o.redeem.output,
       ]);
       witness.push(versionedRedeemScript);
-      
       return witness;
     }
-    
     if (a.signature) return [a.signature];
-    
     return undefined;
   });
-
   // extended validation
   if (opts.validate) {
-    let pubkey: Uint8Array = Uint8Array.from([]);
+    let pubkey = Uint8Array.from([]);
     if (a.address) {
       if (network && network.bech32 !== _address().prefix)
         throw new TypeError('Invalid prefix or Network mismatch');
@@ -221,13 +194,11 @@ export function p2tsh(a: Payment, opts?: PaymentOpts): Payment {
         throw new TypeError('Invalid address data');
       pubkey = _address().data;
     }
-
     if (a.pubkey) {
       if (pubkey.length > 0 && tools.compare(pubkey, a.pubkey) !== 0)
         throw new TypeError('Pubkey mismatch');
       else pubkey = a.pubkey;
     }
-
     if (a.output) {
       if (
         a.output.length !== 34 ||
@@ -239,14 +210,11 @@ export function p2tsh(a: Payment, opts?: PaymentOpts): Payment {
         throw new TypeError('Pubkey mismatch');
       else pubkey = a.output.slice(2);
     }
-
     const hashTree = _hashTree();
-
     if (a.hash && hashTree) {
       if (tools.compare(a.hash, hashTree.hash) !== 0)
         throw new TypeError('Hash mismatch');
     }
-
     // Update the validation logic to handle the case where hashTree might be undefined
     if (a.redeem && a.redeem.output && a.scriptTree && hashTree) {
       const leafHash = tapleafHash({
@@ -256,20 +224,16 @@ export function p2tsh(a: Payment, opts?: PaymentOpts): Payment {
       if (!findScriptPath(hashTree, leafHash))
         throw new TypeError('Redeem script not in tree');
     }
-
     const witness = _witness();
-
     // compare the provided redeem data with the one computed from witness
     if (a.redeem && o.redeem) {
       if (a.redeem.redeemVersion) {
         if (a.redeem.redeemVersion !== o.redeem.redeemVersion)
           throw new TypeError('Redeem.redeemVersion and witness mismatch');
       }
-
       if (a.redeem.output) {
-        if (bscript.decompile(a.redeem.output)!.length === 0)
+        if (bscript.decompile(a.redeem.output).length === 0)
           throw new TypeError('Redeem.output is invalid');
-
         // output redeem is constructed from the witness
         if (
           o.redeem.output &&
@@ -285,37 +249,30 @@ export function p2tsh(a: Payment, opts?: PaymentOpts): Payment {
           throw new TypeError('Redeem.witness and witness mismatch');
       }
     }
-
     if (witness && witness.length) {
-      // P2TSH is always script-path spending
+      // P2MR is always script-path spending
       const controlBlock = witness[witness.length - 1];
       if (controlBlock.length < 33)
         throw new TypeError(
           `The control-block length is too small. Got ${controlBlock.length}, expected min 33.`,
         );
-
       if ((controlBlock.length - 33) % 32 !== 0)
         throw new TypeError(
           `The control-block length of ${controlBlock.length} is incorrect!`,
         );
-
       const m = (controlBlock.length - 33) / 32;
       if (m > 128)
         throw new TypeError(
           `The script path is too long. Got ${m}, expected max 128.`,
         );
-
       const leafVersion = controlBlock[0] & TAPLEAF_VERSION_MASK;
       const script = witness[witness.length - 2];
-
       const leafHash = tapleafHash({ output: script, version: leafVersion });
       const hash = rootHashFromPath(controlBlock, leafHash);
-      
       // Validate that the computed hash matches the expected merkle root
       if (pubkey.length && tools.compare(pubkey, hash) !== 0)
-        throw new TypeError('Merkle root mismatch for p2tsh witness');
+        throw new TypeError('Merkle root mismatch for P2MR witness');
     }
   }
-
   return Object.assign(o, a);
 }

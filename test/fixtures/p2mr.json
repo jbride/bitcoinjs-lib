@@ -7,7 +7,7 @@
       },
       "options": {},
       "expected": {
-        "name": "p2tsh",
+        "name": "p2mr",
         "output": "OP_2 c525714a7f49c28aedbbba78c005931a81c234b2f6c99a73e4d06082adc8bf2b",
         "signature": null,
         "input": null,
@@ -20,7 +20,7 @@
         "output": "OP_2 c525714a7f49c28aedbbba78c005931a81c234b2f6c99a73e4d06082adc8bf2b"
       },
       "expected": {
-        "name": "p2tsh",
+        "name": "p2mr",
         "address": "bc1zc5jhzjnlf8pg4mdmhfuvqpvnr2quyd9j7mye5uly6psg9twghu4ssr0v9k",
         "signature": null,
         "input": null,
@@ -38,7 +38,7 @@
         ]
       },
       "expected": {
-        "name": "p2tsh",
+        "name": "p2mr",
         "hash": "c5c62d7fc595ba5fbe61602eb1a29e2e4763408fe1e2b161beb7cb3c71ebcad9",
         "address": "bc1zchrz6l79jka9l0npvqhtrg579erkxsy0u83tzcd7kl9ncu0tetvsntj7d3",
         "output": "OP_2 c5c62d7fc595ba5fbe61602eb1a29e2e4763408fe1e2b161beb7cb3c71ebcad9",
@@ -72,7 +72,7 @@
         ]
       },
       "expected": {
-        "name": "p2tsh",
+        "name": "p2mr",
         "hash": "c5c62d7fc595ba5fbe61602eb1a29e2e4763408fe1e2b161beb7cb3c71ebcad9",
         "address": "bc1zchrz6l79jka9l0npvqhtrg579erkxsy0u83tzcd7kl9ncu0tetvsntj7d3",
         "output": "OP_2 c5c62d7fc595ba5fbe61602eb1a29e2e4763408fe1e2b161beb7cb3c71ebcad9",
@@ -95,7 +95,7 @@
         }
       },
       "expected": {
-        "name": "p2tsh",
+        "name": "p2mr",
         "address": "bc1z7zruk6pmkq7gwep5keqtxfp0hst3cwkcp45258aq6g3kty6qtnusm4wx6e",
         "output": "OP_2 f087cb683bb03c876434b640b3242fbc171c3ad80d68aa1fa0d2236593405cf9",
         "hash": "f087cb683bb03c876434b640b3242fbc171c3ad80d68aa1fa0d2236593405cf9",
@@ -117,7 +117,7 @@
         ]
       },
       "expected": {
-        "name": "p2tsh",
+        "name": "p2mr",
         "address": "bc1z39ulrazrrvt2n6qrcen8mhw5vzjvn87n3ermfs9hpu2n63typzqsgswa9k",
         "output": "OP_2 8979f1f4431b16a9e803c6667dddd460a4c99fd38e47b4c0b70f153d45640881",
         "hash": "8979f1f4431b16a9e803c6667dddd460a4c99fd38e47b4c0b70f153d45640881",
@@ -144,7 +144,7 @@
         ]
       },
       "expected": {
-        "name": "p2tsh",
+        "name": "p2mr",
         "address": "bc1zzdrgh4clhr7g3m8ffu0tvwz3x4a5ww23za29rq6fnaq76q4d4krqe094se",
         "output": "OP_2 13468bd71fb8fc88ece94f1eb63851357b47395117545183499f41ed02adad86",
         "hash": "13468bd71fb8fc88ece94f1eb63851357b47395117545183499f41ed02adad86",
@@ -176,7 +176,7 @@
         ]
       },
       "expected": {
-        "name": "p2tsh",
+        "name": "p2mr",
         "address": "bc1za76pkz9ql0lze0lxqvm3ruf8ky0sh6hq2ww8qhexmpuusefp0f4s7c3qvx",
         "output": "OP_2 efb41b08a0fbfe2cbfe6033711f127b11f0beae0539c705f26d879c865217a6b",
         "hash": "efb41b08a0fbfe2cbfe6033711f127b11f0beae0539c705f26d879c865217a6b",
@@ -223,7 +223,7 @@
         ]
       },
       "expected": {
-        "name": "p2tsh",
+        "name": "p2mr",
         "address": "bc1zjdznaqqpyvryknx66avrvr5mezuy94pv6j0fzp5y283cm04k22eqruyztk",
         "output": "OP_2 93453e800123064b4cdad758360e9bc8b842d42cd49e91068451e38dbeb652b2",
         "hash": "93453e800123064b4cdad758360e9bc8b842d42cd49e91068451e38dbeb652b2",
@@ -241,7 +241,7 @@
         "hash": "b424dea09f840b932a00373cdcdbd25650b8c3acfe54a9f4a641a286721b8d26"
       },
       "expected": {
-        "name": "p2tsh",
+        "name": "p2mr",
         "address": "bc1zksjdagylss9ex2sqxu7dek7j2egt3savle22na9xgx3gvusm35nqyj6k93",
         "output": "OP_2 b424dea09f840b932a00373cdcdbd25650b8c3acfe54a9f4a641a286721b8d26",
         "signature": null,
@@ -292,7 +292,7 @@
         ]
       },
       "expected": {
-        "name": "p2tsh",
+        "name": "p2mr",
         "address": "bc1zgduma60me9vjq6fe2xndaafxzwhpukdqdk8mwyl3myqnh2qrenfqjdzpsd",
         "output": "OP_2 4379bee9fbc95920693951a6def52613ae1e59a06d8fb713f1d9013ba803ccd2",
         "hash": "4379bee9fbc95920693951a6def52613ae1e59a06d8fb713f1d9013ba803ccd2",
@@ -318,7 +318,7 @@
       },
       "options": {},
       "expected": {
-        "name": "p2tsh",
+        "name": "p2mr",
         "output": "OP_2 c525714a7f49c28aedbbba78c005931a81c234b2f6c99a73e4d06082adc8bf2b",
         "address": "bc1zc5jhzjnlf8pg4mdmhfuvqpvnr2quyd9j7mye5uly6psg9twghu4ssr0v9k",
         "hash": "c525714a7f49c28aedbbba78c005931a81c234b2f6c99a73e4d06082adc8bf2b",
@@ -356,7 +356,7 @@
       },
       "options": {},
       "expected": {
-        "name": "p2tsh",
+        "name": "p2mr",
         "output": "OP_2 ccbd66c6f7e8fdab47b3a486f59d28262be857f30d4773f2d5ea47f7761ce0e2",
         "address": "bc1zej7kd3hhar76k3an5jr0t8fgyc47s4lnp4rh8uk4afrlwasuur3qzgewqq",
         "hash": "ccbd66c6f7e8fdab47b3a486f59d28262be857f30d4773f2d5ea47f7761ce0e2",
@@ -394,7 +394,7 @@
       },
       "options": {},
       "expected": {
-        "name": "p2tsh",
+        "name": "p2mr",
         "output": "OP_2 2f6b2c5397b6d68ca18e09a3f05161668ffe93a988582d55c6f07bd5b3329def",
         "address": "bc1z9a4jc5uhkmtgegvwpx3lq5tpv68layaf3pvz64wx7paatvejnhhsv52lcv",
         "hash": "2f6b2c5397b6d68ca18e09a3f05161668ffe93a988582d55c6f07bd5b3329def",

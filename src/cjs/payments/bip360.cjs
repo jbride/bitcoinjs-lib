@@ -44,7 +44,7 @@ var __importStar =
     return result;
   };
 Object.defineProperty(exports, '__esModule', { value: true });
-exports.MAX_TAPTREE_DEPTH = exports.LEAF_VERSION_TAPSCRIPT_HASH = void 0;
+exports.MAX_TAPTREE_DEPTH = exports.LEAF_VERSION_PAY_TO_MERKLE_ROOT = void 0;
 exports.rootHashFromPath = rootHashFromPath;
 exports.toHashTree = toHashTree;
 exports.findScriptPath = findScriptPath;
@@ -53,7 +53,7 @@ const bcrypto = __importStar(require('../crypto.cjs'));
 const bufferutils_js_1 = require('../bufferutils.cjs');
 const types_js_1 = require('../types.cjs');
 const tools = __importStar(require('uint8array-tools'));
-exports.LEAF_VERSION_TAPSCRIPT_HASH = 0xc1;
+exports.LEAF_VERSION_PAY_TO_MERKLE_ROOT = 0xc0;
 exports.MAX_TAPTREE_DEPTH = 128;
 const isHashBranch = ht => 'left' in ht && 'right' in ht;
 /**
@@ -122,7 +122,7 @@ function findScriptPath(node, hash) {
  * @returns The tapleaf hash as a Buffer.
  */
 function tapleafHash(leaf) {
-  const version = leaf.version || exports.LEAF_VERSION_TAPSCRIPT_HASH;
+  const version = leaf.version || exports.LEAF_VERSION_PAY_TO_MERKLE_ROOT;
   return bcrypto.taggedHash(
     'TapLeaf',
     tools.concat([Uint8Array.from([version]), serializeScript(leaf.output)]),

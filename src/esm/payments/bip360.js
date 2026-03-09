@@ -2,7 +2,7 @@ import * as bcrypto from '../crypto.js';
 import { varuint } from '../bufferutils.js';
 import { isTapleaf } from '../types.js';
 import * as tools from 'uint8array-tools';
-export const LEAF_VERSION_TAPSCRIPT_HASH = 0xc1;
+export const LEAF_VERSION_PAY_TO_MERKLE_ROOT = 0xc0;
 export const MAX_TAPTREE_DEPTH = 128;
 const isHashBranch = ht => 'left' in ht && 'right' in ht;
 /**
@@ -70,7 +70,7 @@ export function findScriptPath(node, hash) {
  * @returns The tapleaf hash as a Buffer.
  */
 export function tapleafHash(leaf) {
-  const version = leaf.version || LEAF_VERSION_TAPSCRIPT_HASH;
+  const version = leaf.version || LEAF_VERSION_PAY_TO_MERKLE_ROOT;
   return bcrypto.taggedHash(
     'TapLeaf',
     tools.concat([Uint8Array.from([version]), serializeScript(leaf.output)]),

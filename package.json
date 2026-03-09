@@ -1,6 +1,6 @@
 {
   "name": "@jbride/bitcoinjs-lib",
-  "version": "7.0.0-rc.0-p2tsh-0.0",
+  "version": "7.0.0-rc.0-p2mr-0.1",
   "description": "Client-side Bitcoin JavaScript library",
   "type": "module",
   "main": "./src/cjs/index.cjs",

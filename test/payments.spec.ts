@@ -14,7 +14,7 @@ const {
   p2wpkh,
   p2wsh,
   p2tr,
-  p2tsh,
+  p2mr,
 } = payments;
 
 import embedFixtures from './fixtures/embed.json';
@@ -25,7 +25,7 @@ import p2shFixtures from './fixtures/p2sh.json';
 import p2wpkhFixtures from './fixtures/p2wpkh.json';
 import p2wshFixtures from './fixtures/p2wsh.json';
 import p2trFixtures from './fixtures/p2tr.json';
-import p2tshFixtures from './fixtures/p2tsh.json';
+import p2mrFixtures from './fixtures/p2mr.json';
 
 let testSuite: {
   paymentName: string;
@@ -74,9 +74,9 @@ let testSuite: {
     payment: p2tr,
   },
   {
-    paymentName: 'p2tsh',
-    fixtures: p2tshFixtures,
-    payment: p2tsh,
+    paymentName: 'p2mr',
+    fixtures: p2mrFixtures,
+    payment: p2mr,
   },
 ];
 

@@ -44,7 +44,7 @@ var __importStar =
     return result;
   };
 Object.defineProperty(exports, '__esModule', { value: true });
-exports.p2tsh = p2tsh;
+exports.p2mr = p2mr;
 const networks_js_1 = require('../networks.cjs');
 const bscript = __importStar(require('../script.cjs'));
 const types_js_1 = require('../types.cjs');
@@ -58,14 +58,14 @@ const OPS = bscript.OPS;
 const TAPROOT_SCRIPT_HASH_WITNESS_VERSION = 0x02;
 const ANNEX_PREFIX = 0x50;
 /**
- * Creates a Pay-to-Taproot-Script-Hash (P2TSH) payment object.
+ * Creates a Pay-to-Taproot-Script-Hash (P2MR) payment object.
  *
- * @param a - The payment object containing the necessary data for P2TSH.
+ * @param a - The payment object containing the necessary data for P2MR.
  * @param opts - Optional payment options.
- * @returns The P2TSH payment object.
+ * @returns The P2MR payment object.
  * @throws {TypeError} If the provided data is invalid or insufficient.
  */
-function p2tsh(a, opts) {
+function p2mr(a, opts) {
   if (
     !a.address &&
     !a.output &&
@@ -124,7 +124,7 @@ function p2tsh(a, opts) {
     return;
   });
   const network = a.network || networks_js_1.bitcoin;
-  const o = { name: 'p2tsh', network };
+  const o = { name: 'P2MR', network };
   lazy.prop(o, 'address', () => {
     if (!o.pubkey) return;
     const words = bech32_1.bech32m.toWords(o.pubkey);
@@ -169,7 +169,7 @@ function p2tsh(a, opts) {
     ) {
       return a.redeem.redeemVersion;
     }
-    return bip360_js_1.LEAF_VERSION_TAPSCRIPT_HASH;
+    return bip360_js_1.LEAF_VERSION_PAY_TO_MERKLE_ROOT;
   });
   lazy.prop(o, 'redeem', () => {
     const witness = _witness(); // witness without annex
@@ -292,7 +292,7 @@ function p2tsh(a, opts) {
       }
     }
     if (witness && witness.length) {
-      // P2TSH is always script-path spending
+      // P2MR is always script-path spending
       const controlBlock = witness[witness.length - 1];
       if (controlBlock.length < 33)
         throw new TypeError(
@@ -316,7 +316,7 @@ function p2tsh(a, opts) {
       const hash = (0, bip360_js_1.rootHashFromPath)(controlBlock, leafHash);
       // Validate that the computed hash matches the expected merkle root
       if (pubkey.length && tools.compare(pubkey, hash) !== 0)
-        throw new TypeError('Merkle root mismatch for p2tsh witness');
+        throw new TypeError('Merkle root mismatch for P2MR witness');
     }
   }
   return Object.assign(o, a);

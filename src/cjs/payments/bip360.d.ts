@@ -1,5 +1,5 @@
 import { Tapleaf, Taptree } from '../types.js';
-export declare const LEAF_VERSION_TAPSCRIPT_HASH = 193;
+export declare const LEAF_VERSION_PAY_TO_MERKLE_ROOT = 192;
 export declare const MAX_TAPTREE_DEPTH = 128;
 interface HashLeaf {
     hash: Uint8Array;
